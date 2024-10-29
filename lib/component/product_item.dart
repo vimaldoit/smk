@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:remixicon/remixicon.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skmcommerce/component/popup_item.dart';
 import 'package:skmcommerce/utils/constants.dart';
@@ -140,51 +141,7 @@ class _ProdectItemState extends State<ProdectItem> {
                           child: Center(
                             child: InkWell(
                               onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          contentPadding: EdgeInsets.zero,
-                                          actionsPadding: EdgeInsets.zero,
-                                          titlePadding: EdgeInsets.zero,
-                                          iconPadding: EdgeInsets.zero,
-                                          // icon: Icon(
-                                          //   Icons.question_mark,
-                                          //   size: 40,
-                                          // ),
-                                          content: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              PopUpItem(),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  // MaterialButton(
-                                                  //     shape: RoundedRectangleBorder(
-                                                  //       borderRadius: BorderRadius.circular(10),
-                                                  //     ),
-                                                  //     color: AppColors.redColor,
-                                                  //     onPressed: this.clickEvent,
-                                                  //     child: Text(
-                                                  //       "Yes",
-                                                  //       style: TextStyle(color: Colors.white),
-                                                  //     )),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              )
-                                            ],
-                                          ),
-                                        ));
+                                addPopup(context);
                               },
                               child: Text(
                                 "+",
@@ -206,5 +163,96 @@ class _ProdectItemState extends State<ProdectItem> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> addPopup(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              contentPadding: EdgeInsets.zero,
+              actionsPadding: EdgeInsets.zero,
+              titlePadding: EdgeInsets.zero,
+              iconPadding: EdgeInsets.zero,
+              insetPadding: EdgeInsets.symmetric(horizontal: 20),
+              // icon: Icon(
+              //   Icons.question_mark,
+              //   size: 40,
+              // ),
+              content: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Select Variant",
+                          style: TextStyle(
+                              color: AppColors.textcolor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: titleFontSize),
+                        ),
+                        Spacer(),
+                        InkWell(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Icon(Remix.close_line))
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    PopUpItem(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  bottomLeft: Radius.circular(8))),
+                          child: Center(child: Text("-")),
+                        ),
+                        Container(
+                            height: 30, width: 60.w, child: TextFormField()),
+                        Container(
+                          child: Text("+"),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        // MaterialButton(
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     color: AppColors.redColor,
+                        //     onPressed: this.clickEvent,
+                        //     child: Text(
+                        //       "Yes",
+                        //       style: TextStyle(color: Colors.white),
+                        //     )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    )
+                  ],
+                ),
+              ),
+            ));
   }
 }

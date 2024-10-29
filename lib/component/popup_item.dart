@@ -12,9 +12,12 @@ class PopUpItem extends StatelessWidget {
         Radius.circular(8),
       ),
       child: Container(
+        decoration: BoxDecoration(
+            color: AppColors.backgroundColor,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey)),
         width: 90.w,
-        height: 120,
-        color: AppColors.backgroundColor,
+        height: 90,
         child: Row(
           children: [
             Container(
@@ -24,7 +27,7 @@ class PopUpItem extends StatelessWidget {
                     bottomLeft: Radius.circular(8)),
                 child: Image.asset(
                   "assets/images/watch1.jpeg",
-                  // width: 100,
+                  width: 90,
                   // height: 100,
                   fit: BoxFit.cover,
                 ),
@@ -61,7 +64,7 @@ class PopUpItem extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has ",
+                              "variant : undefined ",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: AppColors.subTextColor,
@@ -87,6 +90,9 @@ class PopUpItem extends StatelessWidget {
                         ),
                         Text("\u{20B9}3500")
                       ],
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),
