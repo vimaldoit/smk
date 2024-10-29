@@ -4,9 +4,11 @@ import 'package:sizer/sizer.dart';
 class AppColors {
   static const backgroundColor = Colors.white;
   static final secBackgroundColor = Colors.grey[300];
-  static const primarycolor = Color.fromARGB(255, 23, 72, 111);
+  static const primarycolor = Color(0xff236c8c);
   static const textcolor = Colors.black;
   static const subTextColor = Colors.grey;
+  static const graycolor = Color(0xffc0cacc);
+  static const offerbackgroundcolor = Color(0xff52c41a);
 }
 
 final double titleFontSize = 18.sp;

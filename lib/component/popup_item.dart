@@ -15,9 +15,8 @@ class PopUpItem extends StatelessWidget {
         decoration: BoxDecoration(
             color: AppColors.backgroundColor,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey)),
+            border: Border.all(color: AppColors.graycolor)),
         width: 90.w,
-        height: 90,
         child: Row(
           children: [
             Container(
@@ -41,11 +40,15 @@ class PopUpItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       children: [
                         Expanded(
                           child: Text(
-                            "Rolex",
+                            "Rolex ",
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 color: AppColors.textcolor,
@@ -82,13 +85,21 @@ class PopUpItem extends StatelessWidget {
                         Text(
                           "\u{20B9}40000",
                           style: TextStyle(
-                            color: AppColors.subTextColor,
-                          ),
+                              decoration: TextDecoration.lineThrough,
+                              fontSize: 17.sp,
+                              color: AppColors.subTextColor,
+                              fontWeight: FontWeight.w600),
                         ),
                         SizedBox(
                           width: 5,
                         ),
-                        Text("\u{20B9}3500")
+                        Text(
+                          "\u{20B9}3500",
+                          style: TextStyle(
+                              fontSize: 17.sp,
+                              color: AppColors.primarycolor,
+                              fontWeight: FontWeight.w600),
+                        )
                       ],
                     ),
                     SizedBox(
