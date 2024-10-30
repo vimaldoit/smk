@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:skmcommerce/component/custom_btn.dart';
 import 'package:skmcommerce/component/product_card.dart';
+import 'package:skmcommerce/component/product_item.dart';
 import 'package:skmcommerce/component/section_heading.dart';
 import 'package:skmcommerce/custom/bottomNav.dart';
 import 'package:skmcommerce/utils/constants.dart';
@@ -67,14 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       true, // Allows the ListView to size itself correctly
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return const ProductCard(
-                      image: 'assets/images/watch1.jpeg',
-                      title: 'Rolex Daytona',
-                      description: 'Lorem ipsum dolor sit amet...',
-                      oldPrice: '₹2,000.00',
-                      newPrice: '₹1,500.00',
-                      discount: '25% OFF',
-                    );
+                    return const ProdectItem();
                   },
                   separatorBuilder: (context, index) {
                     return const SizedBox(height: 20);

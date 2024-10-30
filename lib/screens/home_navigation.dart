@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:skmcommerce/component/filtter_drawer.dart';
 import 'package:skmcommerce/custom/bottomNav.dart';
 import 'package:skmcommerce/screens/helpscreen.dart';
 import 'package:skmcommerce/screens/homescreen.dart';
@@ -35,7 +36,10 @@ class _HomeNavigationState extends State<HomeNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        endDrawerEnableOpenDragGesture: false,
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           forceMaterialTransparency: true,
           scrolledUnderElevation: 0,
           toolbarHeight: 80,
@@ -67,6 +71,7 @@ class _HomeNavigationState extends State<HomeNavigation> {
             )
           ],
         ),
+        endDrawer: FilterDrawer(),
         body: navigationPages(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex, // Set the active index

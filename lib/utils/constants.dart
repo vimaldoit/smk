@@ -9,6 +9,7 @@ class AppColors {
   static const subTextColor = Colors.grey;
   static const graycolor = Color(0xffc0cacc);
   static const offerbackgroundcolor = Color(0xff52c41a);
+  static const hashTagColor = Colors.blue;
 }
 
 final double titleFontSize = 18.sp;
