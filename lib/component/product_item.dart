@@ -6,17 +6,24 @@ import 'package:remixicon/remixicon.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skmcommerce/component/popup_item.dart';
 import 'package:skmcommerce/component/triangle_widget.dart';
+import 'package:skmcommerce/model/featured_model.dart';
+import 'package:skmcommerce/pocketbase_service.dart';
 import 'package:skmcommerce/utils/constants.dart';
 
-class ProdectItem extends StatefulWidget {
-  const ProdectItem({super.key});
+class ProductItem extends StatefulWidget {
+  final Product? productData;
+  const ProductItem({super.key, this.productData});
 
   @override
-  State<ProdectItem> createState() => _ProdectItemState();
+  State<ProductItem> createState() => _ProductItemState();
 }
 
-class _ProdectItemState extends State<ProdectItem> {
+class _ProductItemState extends State<ProductItem> {
   TextEditingController _countController = TextEditingController();
+
+  // List<String>? get productImages {
+  //   return widget.productData?.images;
+  // }
 
   cartCoutIncrease() {
     setState(() {
@@ -38,6 +45,7 @@ class _ProdectItemState extends State<ProdectItem> {
     // TODO: implement initState
     super.initState();
     _countController.text = "0";
+    //  print( " img:  https://commerce.sketchmonk.com/_pb/api/files/${widget.productData!.collectionId.toString()}/${widget.productData!.id}/${widget.productData!.images[0].toString()}");
   }
 
   @override
@@ -54,22 +62,31 @@ class _ProdectItemState extends State<ProdectItem> {
               onTap: () => itemDetailsPopUp(context),
               child: Container(
                 width: 90.w,
-                height: 120,
+                height: 130,
                 color: AppColors.backgroundColor,
                 child: Row(
                   children: [
-                    Container(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            bottomLeft: Radius.circular(8)),
-                        child: Image.asset(
-                          "assets/images/watch1.jpeg",
-                          // width: 100,
-                          // height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    SizedBox(
+                      width: 130,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: widget.productData!.images.length,
+                          itemBuilder: (context, i) {
+                            return ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  bottomLeft: Radius.circular(8)),
+                              child: Image.network(
+                                // "assets/images/watch1.jpeg",
+
+                                // "https://commerce.sketchmonk.com/_pb/api/files/kdhrswxqb1qh3yw/gaf58ffvo1rtud0/watch_01_s8WuhlQGei.jpeg",
+                                "https://commerce.sketchmonk.com/_pb/api/files/${widget.productData!.collectionId.toString()}/${widget.productData!.id}/${widget.productData!.images[0].toString()}",
+                                // width: 100,
+                                // height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          }),
                     ),
                     SizedBox(
                       width: 10,
@@ -78,6 +95,7 @@ class _ProdectItemState extends State<ProdectItem> {
                       child: Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
                               height: 10,
@@ -86,7 +104,9 @@ class _ProdectItemState extends State<ProdectItem> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    "Rolex",
+                                    // "Rolex",
+                                    widget.productData!.name,
+
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: AppColors.textcolor,
@@ -105,7 +125,8 @@ class _ProdectItemState extends State<ProdectItem> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has ",
+                                      // "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has ",
+                                      widget.productData!.description,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: AppColors.subTextColor,
@@ -121,7 +142,8 @@ class _ProdectItemState extends State<ProdectItem> {
                             Row(
                               children: [
                                 Text(
-                                  "\u{20B9}40000",
+                                  // "\u{20B9}40000",
+                                  "\u{20B9}${widget.productData!.actualPrice.toString()}.00",
                                   style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       color: AppColors.subTextColor,
@@ -132,7 +154,8 @@ class _ProdectItemState extends State<ProdectItem> {
                                   width: 5,
                                 ),
                                 Text(
-                                  "\u{20B9}3500",
+                                  // "\u{20B9}3500",
+                                  "\u{20B9}${widget.productData!.discountPrice.toString()}.00",
                                   style: TextStyle(
                                       fontSize: 17.sp,
                                       color: AppColors.primarycolor,
@@ -157,8 +180,8 @@ class _ProdectItemState extends State<ProdectItem> {
                                           onTap: () => cartCoutDecrease(),
                                           child: Container(
                                             color: AppColors.primarycolor,
-                                            width: 25,
-                                            height: 25,
+                                            width: 30,
+                                            height: 28,
                                             child: Center(
                                               child: Text(
                                                 "-",
@@ -176,8 +199,8 @@ class _ProdectItemState extends State<ProdectItem> {
                                     ? SizedBox()
                                     : Container(
                                         color: AppColors.graycolor,
-                                        width: 25,
-                                        height: 25,
+                                        width: 30,
+                                        height: 28,
                                         child: Center(
                                           child: TextFormField(
                                               style: TextStyle(
@@ -197,9 +220,21 @@ class _ProdectItemState extends State<ProdectItem> {
                                 InkWell(
                                   onTap: () => cartCoutDecrease(),
                                   child: Container(
-                                    color: AppColors.primarycolor,
-                                    width: 25,
-                                    height: 25,
+                                    // color: AppColors.primarycolor,
+                                    width: 30,
+                                    height: 28,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.primarycolor,
+                                        backgroundBlendMode: BlendMode.darken,
+                                        borderRadius: _countController.text ==
+                                                "0"
+                                            ? BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(0),
+                                                bottomLeft: Radius.circular(0),
+                                                bottomRight:
+                                                    Radius.circular(10))
+                                            : BorderRadius.circular(0)),
                                     child: Center(
                                       child: InkWell(
                                         onTap: () {
@@ -232,6 +267,7 @@ class _ProdectItemState extends State<ProdectItem> {
           children: [
             Transform.translate(
               offset: Offset(83.5.w, 10),
+              // offset: Offset(85.2.w, 10),
               child: Container(
                 decoration: BoxDecoration(
                     color: AppColors.offerbackgroundcolor,
@@ -253,6 +289,7 @@ class _ProdectItemState extends State<ProdectItem> {
             ),
             Transform.translate(
               offset: Offset(94.5.w, 31.6),
+              // offset: Offset(95.w, 31.6),
               child: CustomPaint(
                 painter: TrianglePainter(
                   strokeColor: Color.fromARGB(255, 43, 129, 0),
@@ -463,178 +500,208 @@ class _ProdectItemState extends State<ProdectItem> {
               // ),
               content: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          child: Image.asset(
-                            "assets/images/watch1.jpeg",
-                            width: 100.w,
-                            height: 40.h,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: InkWell(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Icon(
-                              Remix.close_line,
-                              size: 25,
-                              color: AppColors.graycolor,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  // height: MediaQuery.of(context).size.height * 0.6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Rolex sgfjhdgsjkfgdjsfjd dsdgfdgfgdf iueyrhvrtj",
-                                  style: TextStyle(
-                                      color: AppColors.textcolor,
-                                      fontSize: titleFontSize,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                          // Container(
+                          //   child: Image.network(
+                          //     // "assets/images/watch1.jpeg",
+                          //      "https://commerce.sketchmonk.com/_pb/api/files/${widget.productData!.collectionId.toString()}/${widget.productData!.id}/${widget.productData!.images[0].toString()}",
+                          //     width: 100.w,
+                          //     height: 40.h,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // ),
+                          CarouselSlider(
+                            options: CarouselOptions(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              viewportFraction: 1.0,
+                              enableInfiniteScroll: true,
+                              enlargeCenterPage: true,
+                            ),
+                            items: widget.productData!.images.map((imageUrl) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Image.network(
+                                    "https://commerce.sketchmonk.com/_pb/api/files/${widget.productData!.collectionId.toString()}/${widget.productData!.id}/$imageUrl",
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: InkWell(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Icon(
+                                Remix.close_line,
+                                size: 25,
+                                color: AppColors.graycolor,
                               ),
-                              Icon(
-                                Remix.vip_crown_2_fill,
-                                size: 20,
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Remix.apps_line,
-                                size: 20,
-                                color: AppColors.hashTagColor,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "Rolex ",
-                                  style: TextStyle(
-                                      color: AppColors.hashTagColor,
-                                      fontSize: titleFontSize,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has ",
-                            style: TextStyle(
-                                color: AppColors.subTextColor,
-                                fontSize: secondayTitleFontSize),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "\u{20B9}3500",
-                                style: TextStyle(
-                                    fontSize: 17.sp,
-                                    color: AppColors.primarycolor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "\u{20B9}40000",
-                                style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: AppColors.subTextColor,
-                                    fontSize: 17.sp,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              MaterialButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(
-                                        color: AppColors.graycolor),
-                                  ),
-                                  color: AppColors.backgroundColor,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600),
-                                  )),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              MaterialButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  color: AppColors.primarycolor,
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Remix.add_line,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "Add to Cart",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
+                            ),
                           )
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    // "Rolex sgfjhdgsjkfgdjsfjd dsdgfdgfgdf iueyrhvrtj",
+                                    widget.productData!.name,
+                                    style: TextStyle(
+                                        color: AppColors.textcolor,
+                                        fontSize: titleFontSize,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                Icon(
+                                  Remix.vip_crown_2_fill,
+                                  size: 20,
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Remix.apps_line,
+                                  size: 20,
+                                  color: AppColors.hashTagColor,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    // "Rolex ",
+                                    widget.productData!.expand.category.title,
+                                    style: TextStyle(
+                                        color: AppColors.hashTagColor,
+                                        fontSize: titleFontSize,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              // "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has ",
+                              widget.productData!.description,
+                              style: TextStyle(
+                                  color: AppColors.subTextColor,
+                                  fontSize: secondayTitleFontSize),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  // "\u{20B9}3500",
+                                  "\u{20B9}${widget.productData!.discountPrice.toString()}.00",
+                                  style: TextStyle(
+                                      fontSize: 17.sp,
+                                      color: AppColors.primarycolor,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  // "\u{20B9}40000",
+
+                                  "\u{20B9}${widget.productData!.actualPrice.toString()}.00",
+                                  style: TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      color: AppColors.subTextColor,
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                MaterialButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                          color: AppColors.graycolor),
+                                    ),
+                                    color: AppColors.backgroundColor,
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                MaterialButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    color: AppColors.primarycolor,
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Remix.add_line,
+                                          size: 20,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Add to Cart",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ));

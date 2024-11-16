@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skmcommerce/custom/bottomNav.dart';
 
 class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});

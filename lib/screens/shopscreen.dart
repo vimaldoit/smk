@@ -3,8 +3,9 @@ import 'package:remixicon/remixicon.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skmcommerce/component/common_heading.dart';
 import 'package:skmcommerce/component/product_item.dart';
-import 'package:skmcommerce/component/section_heading.dart';
-import 'package:skmcommerce/custom/bottomNav.dart';
+import 'package:skmcommerce/model/category_model.dart';
+import 'package:skmcommerce/model/featured_model.dart';
+import 'package:skmcommerce/pocketbase_service.dart';
 import 'package:skmcommerce/utils/constants.dart';
 
 class ShopScreen extends StatefulWidget {
@@ -15,7 +16,33 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
+  final PocketBaseService pocketBaseService = PocketBaseService();
+
   TextEditingController _searchController = TextEditingController();
+
+  List<Product> result = [];
+
+  Future<void> fetchFeaturedProducts() async {
+    final productsJson = await pocketBaseService.fetchProducts(
+      collectionName: 'products',
+      page: 1,
+      perPage: 12,
+      sort: "",
+    );
+    setState(() {
+      result = productsJson.map((json) => Product.fromJson(json)).toList();
+      //  result = productsJson.cast<Product>();
+    });
+    print("Featured products: ${result.length}");
+    print("Featured products: ${result.first.images}");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFeaturedProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,9 +131,11 @@ class _ShopScreenState extends State<ShopScreen> {
               ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
+                itemCount: result.length,
                 itemBuilder: (context, index) {
-                  return ProdectItem();
+                  return ProductItem(
+                    productData: result[index],
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(
@@ -114,10 +143,13 @@ class _ShopScreenState extends State<ShopScreen> {
                   );
                 },
               ),
+              SizedBox(
+                height: 20,
+              ),
             ],
           )
           //  Column(
-          //   children: [ProdectItem()],
+          //   children: [ProductItem()],
           // ),
           ),
       // bottomNavigationBar: CustomBottomNavigationBar(

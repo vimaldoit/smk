@@ -27,14 +27,15 @@ class ProductCard extends StatelessWidget {
         // side: BorderSide(color: AppColors.primarycolor, width: 1),
         borderRadius: BorderRadius.circular(10),
       ),
-       elevation: 0,
+      elevation: 0,
       child: Container(
         height: 120,
         child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
               child: Image.asset(
                 image,
                 width: 120,
@@ -45,8 +46,8 @@ class ProductCard extends StatelessWidget {
             const SizedBox(width: 16),
             Expanded(
               child: Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
@@ -108,67 +109,60 @@ class ProductCard extends StatelessWidget {
             //     //       ),
             //     //     ),
             //     //   ),
-            
-               
-               
+
             //   ],
             // ),
 
-              
-        
-        
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                //       if (discount.isNotEmpty)
+                // Container(
+                //   // padding:
+                //   //     const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                //   decoration: BoxDecoration(
+                //     color: Colors.green,
+                //     borderRadius: BorderRadius.circular(5),
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                //     child: Text(
+                //       discount,
+                //       style: const TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 12,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                const SizedBox(
+                  height: 40,
+                ),
 
-                  //       if (discount.isNotEmpty) 
-                  // Container(
-                  //   // padding:
-                  //   //     const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.green,
-                  //     borderRadius: BorderRadius.circular(5),
-                  //   ),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  //     child: Text(
-                  //       discount,
-                  //       style: const TextStyle(
-                  //         color: Colors.white,
-                  //         fontSize: 12,
-                  //         fontWeight: FontWeight.bold,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                 const  SizedBox(height: 40,),
-               
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          width: 50,
-                          height: 35,
-                          decoration: BoxDecoration(
-                                                      color:
-                                                          AppColors.primarycolor.withOpacity(0.85),
-                                                      backgroundBlendMode:
-                                                          BlendMode.darken,
-                                                      borderRadius:
-                                                          const BorderRadius.only(
-                                                              topLeft:
-                                                                  Radius.circular(10),
-                                                              topRight:
-                                                                  Radius.circular(0),
-                                                              bottomLeft:
-                                                                  Radius.circular(0),
-                                                              bottomRight:
-                                                                  Radius.circular(10))),
-                                                                  child: IconButton(onPressed: (){}, icon: Icon(Icons.add, color: Colors.white,)),
-                                  
-                        ),
-                      ),
-                    ],
-                  )
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    width: 50,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        color: AppColors.primarycolor.withOpacity(0.85),
+                        backgroundBlendMode: BlendMode.darken,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(0),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(10))),
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

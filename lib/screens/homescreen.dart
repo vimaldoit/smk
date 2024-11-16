@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:remixicon/remixicon.dart';
 import 'package:skmcommerce/component/custom_btn.dart';
-import 'package:skmcommerce/component/product_card.dart';
 import 'package:skmcommerce/component/product_item.dart';
 import 'package:skmcommerce/component/section_heading.dart';
-import 'package:skmcommerce/custom/bottomNav.dart';
+import 'package:skmcommerce/model/category_model.dart';
+import 'package:skmcommerce/model/featured_model.dart';
+import 'package:skmcommerce/pocketbase_service.dart';
+import 'package:skmcommerce/screens/home_navigation.dart';
 import 'package:skmcommerce/utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,6 +18,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final PocketBaseService pocketBaseService = PocketBaseService();
+  List<Product> result = [];
+  List<CategoryModel> categories = [];
+
+  Future<void> fetchFeaturedProducts() async {
+    final productsJson = await pocketBaseService.productsFeatured(
+      collectionName: 'products',
+    );
+    setState(() {
+      result = productsJson.map((json) => Product.fromJson(json)).toList();
+      //  result = productsJson.cast<Product>();
+    });
+    print("Featured products: ${result.length}");
+    print("Featured products: ${result.first.images}");
+  }
+
+  Future<void> fetchCategories() async {
+    final categoriesJson = await pocketBaseService.fetchCategories();
+
+    setState(() {
+      categories =
+          categoriesJson.map((cat) => CategoryModel.fromJson(cat)).toList();
+    });
+    print("cat: $categories");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFeaturedProducts();
+    fetchCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,22 +102,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       true, // Allows the ListView to size itself correctly
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return const ProdectItem();
+                    return ProductItem(
+                      productData: result[index],
+                    );
                   },
                   separatorBuilder: (context, index) {
                     return const SizedBox(height: 20);
                   },
-                  itemCount: 4),
+                  itemCount: result.length),
 
               const SizedBox(
                 height: 25,
               ),
 
-              const Align(
+              Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: CustomButton(title: "See More"),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: CustomButton(
+                    title: "See More",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeNavigation(
+                                    selectedIndex: 1,
+                                  )));
+                    },
+                  ),
                 ),
               ),
 
@@ -97,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 250,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: GridView.builder(
-                  itemCount: 4,
+                  itemCount: categories.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3),
                   itemBuilder: (BuildContext context, int index) {
@@ -106,8 +152,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           horizontal: 10, vertical: 10),
                       child: GridTile(
                           // footer:  Text(),
-                          child: Image.asset(
-                        "assets/images/category1.webp",
+                          child: Image.network(
+                        //  "assets/images/category1.webp",
+                        "https://commerce.sketchmonk.com/_pb/api/files/${categories[index].collectionId}/${categories[index].id}/${categories[index].image.toString()}",
+
                         fit: BoxFit.cover,
                       )),
                     );
@@ -118,11 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
               //   height: 10,
               // ),
 
-              const Align(
+              Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: CustomButton(title: "See More"),
+                  child: CustomButton(title: "See More", onPressed: () {}),
                 ),
               ),
 
@@ -133,26 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Remix.home_2_line),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Remix.handbag_line),
-      //       label: 'Shop',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Remix.lifebuoy_line),
-      //       label: 'Help',
-      //     ),
-      //   ],
-      // ),
-
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentItem: BottomNavItem.home,
-      // ),
     );
   }
 }
